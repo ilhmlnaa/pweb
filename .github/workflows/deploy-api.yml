@@ -1,0 +1,38 @@
+name: Deploy Node.js API
+
+on:
+  push:
+    paths:
+      - 'api-postman/**'  
+    branches:
+      - main  
+
+jobs:
+  deploy-api:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Change to API directory
+        run: cd api-postman
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18' 
+
+      - name: Install dependencies
+        run: |
+          cd api-postman
+          npm install
+
+      - name: Build project
+        run: |
+          cd api-postman
+          npm run build  
+
+      - name: Start the application
+        run: |
+          cd api-postman
+          pm2 restart ecosystem.config.ejs  
