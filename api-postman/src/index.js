@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/v1", mhsRoutes);
 
 app.get("/", (req, res) => {
-  response(200, null, "Api Ready To Use", res);   
+  response(200, null, "Api Ready!!!", res);   
 });
 
 export default app;
