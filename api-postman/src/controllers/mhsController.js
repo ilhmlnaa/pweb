@@ -83,7 +83,7 @@ export const updateMhs = async (req, res) => {
 
     const result = await prisma.mhs.update({
       where: {
-        id: parseInt(npm),
+        npm: parseInt(npm),
       },
       data: {
         nama: nama,
