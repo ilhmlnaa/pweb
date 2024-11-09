@@ -115,6 +115,10 @@ export const deleteMhs = async (req, res) => {
 
     response(200, result, "OK", res);
   } catch (error) {
-    response(500, null, error.message, res);
+    if (error.code === "P2025") {
+      response(404, null, "Data tidak ditemukan", res);
+    } else {
+      response(500, null, error.message, res);
+    }
   }
 };
