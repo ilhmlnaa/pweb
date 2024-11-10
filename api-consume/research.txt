@@ -1,5 +1,0 @@
-https://github.com/farizdotid/DAFTAR-API-LOKAL-INDONESIA?tab=readme-ov-file#pemerintahan
-
-https://data.bmkg.go.id/prakiraan-cuaca
-https://kodewilayah.id/
-https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=32.76.03.1003s
