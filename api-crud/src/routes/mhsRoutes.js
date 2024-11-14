@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getMhs,
-  getMhsById,
   getMhsByNpm,
   createMhs,
   updateMhs,
@@ -11,7 +10,6 @@ import {
 const router = express.Router();
 
 router.get("/mhs", getMhs);
-router.get("/mhs/:id", getMhsById);
 router.get("/mhs/npm/:npm", getMhsByNpm);
 router.post("/mhs", createMhs);
 router.patch("/mhs/:npm", updateMhs);

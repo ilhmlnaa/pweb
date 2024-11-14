@@ -12,29 +12,14 @@ export const getMhs = async (req, res) => {
   }
 };
 
-export const getMhsById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await prisma.mhs.findUnique({
-      where: {
-        id: parseInt(id),
-      },
-    });
-
-    if (!result) {
-      response(404, null, "Data not found", res);
-      return;
-    }
-
-    response(200, result, "OK", res);
-  } catch (error) {
-    response(500, null, error.message, res);
-  }
-};
-
 export const getMhsByNpm = async (req, res) => {
+  const { npm } = req.params;
+
+  if (!npm) {
+    return response(400, null, "NPM query is required", res);
+  }
+
   try {
-    const { npm } = req.params;
     const result = await prisma.mhs.findUnique({
       where: {
         npm: npm,
@@ -53,14 +38,14 @@ export const getMhsByNpm = async (req, res) => {
 };
 
 export const createMhs = async (req, res) => {
+  const { npm, nama, kelas, no_hp, alamat } = req.body;
+
+  if (!npm || !nama || !kelas || !no_hp || !alamat) {
+    response(400, null, "All fields must be filled", res);
+    return;
+  }
+
   try {
-    const { npm, nama, kelas, no_hp, alamat } = req.body;
-
-    if (!npm || !nama || !kelas || !no_hp || !alamat) {
-      response(400, null, "All fields must be filled", res);
-      return;
-    }
-
     const result = await prisma.mhs.create({
       data: {
         npm: npm,
@@ -77,10 +62,18 @@ export const createMhs = async (req, res) => {
 };
 
 export const updateMhs = async (req, res) => {
-  try {
-    const { npm } = req.params;
-    const { nama, kelas, no_hp, alamat } = req.body;
+  const { npm } = req.params;
+  const { nama, kelas, no_hp, alamat } = req.body;
 
+  if (!npm) {
+    return response(400, null, "NPM query is required", res);
+  }
+
+  if (!nama || !kelas || !no_hp || !alamat) {
+    return response(400, null, "All fields must be filled", res);
+  }
+
+  try {
     const result = await prisma.mhs.update({
       where: {
         npm: parseInt(npm),
@@ -95,13 +88,22 @@ export const updateMhs = async (req, res) => {
 
     response(200, result, "OK", res);
   } catch (error) {
-    response(500, null, error.message, res);
+    if (error.code === "P2025") {
+      response(404, null, "Data not found", res);
+    } else {
+      response(500, null, error.message, res);
+    }
   }
 };
 
 export const deleteMhs = async (req, res) => {
+  const { npm } = req.params;
+
+  if (!npm) {
+    return response(400, null, "NPM params is required", res);
+  }
+
   try {
-    const { npm } = req.params;
     const result = await prisma.mhs.delete({
       where: {
         npm: npm,
@@ -116,7 +118,7 @@ export const deleteMhs = async (req, res) => {
     response(200, result, "OK", res);
   } catch (error) {
     if (error.code === "P2025") {
-      response(404, null, "Data tidak ditemukan", res);
+      response(404, null, "Data not found", res);
     } else {
       response(500, null, error.message, res);
     }
